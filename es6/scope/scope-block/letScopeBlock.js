@@ -1,7 +1,8 @@
 /**
  * let key word restrict variable scope to block scope
+ * let variables are NOT hoisted, so it is not visible outside block
  */
-var callBacks=[];
+let callBacks=[];
 for(let i =0 ; i< 5; i++){
     callBacks[i] = function(i){
         switch(i*2){
