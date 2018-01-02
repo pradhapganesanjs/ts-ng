@@ -14,18 +14,13 @@ let customer = {
     }
 }
 
-let {name, dob, phone} = customer;
-console.log(`${name} ${dob} ${phone} `) //o/p : Pradhap Ganesan 11/11/1988 2013334444
+//obj shorthand matching and default-able
+let {name, dob, phone,custId="000"} = customer;
+console.log(`${name} ${dob} ${phone} ${custId}`) //o/p : Pradhap Ganesan 11/11/1988 2013334444 000
 
 //alias name give object properties
 let {street1 : primAddSt1, street2 : primAddApt, city : primAddCity} = customer.paddress
 console.log(`${primAddSt1} ${primAddApt} ${primAddCity} `) //o/p: 9100 NW 52.. Apt 222 Miami
-
-//object can be destructured one level at a time
-let {paddress:address1, caddress:address2} = customer
-let {city : city1} = address1
-let {city : city2} = address2
-console.log(`${city1} , ${city2}`)
 
 //let {name=n, dob=d, phone=min} = customer;
 /* ==>
