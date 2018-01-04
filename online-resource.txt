@@ -1,0 +1,44 @@
+-- VSC guide
+    http://www.dotnetcurry.com/visualstudio/1340/visual-studio-code-tutorial
+
+-- Git - Proj reference
+http://embed.plnkr.co/9luTng/?show=preview
+
+ng cli
+https://alligator.io/angular/angular-cli-reference/
+
+
+ng-npm
+https://www.npmjs.com/package/angular-cli
+From existing proj:
+    npm install -g @angular/cli@latest
+
+    rm -rf node_modules dist # use rmdir /S/Q node_modules dist in Windows Command Prompt; use rm -r -fo node_modules,dist in Windows PowerShell 
+    npm install --save-dev @angular/cli@latest
+    npm install
+
+ng-packagr
+https://medium.com/@nikolasleblanc/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e
+https://www.excella.com/insights/building-scalable-and-beautiful-angular-apps-part-three
+
+
+To-be Invetigated
+--- how css to be packaged? Shared will have component. what about css base and extends..
+--- shared, modules, etc.. how data flows? code reuse...
+
+$ ng g module home
+$ ng g component home/component
+$ ng g m SomeModule --routing
+$ npm install –save bootstrap@next
+--- Modify styles configuration to add Bootstrap CSS
+    styles": [
+        "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "styles.css"
+    ],
+
+    Modify scripts configuration to add jQuery, Bootstrap and Tether JS files.
+    "scripts": [
+        "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/tether/dist/js/tether.min.js",        
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+    ],
