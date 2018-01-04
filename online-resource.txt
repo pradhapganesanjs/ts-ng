@@ -26,10 +26,14 @@ To-be Invetigated
 --- how css to be packaged? Shared will have component. what about css base and extends..
 --- shared, modules, etc.. how data flows? code reuse...
 
+$ ng new ng-myproj --skip-install --directory ./ng-myproj
 $ ng g module home
 $ ng g component home/component
 $ ng g m SomeModule --routing
-$ npm install –save bootstrap@next
+$ ng build --output-path ../resources/static
+$ npm install -save bootstrap": "4.0.0-beta.2
+$ npm install -save bootstrap-css@4.0.0-alpha.5 --save-dev
+$ npm install –save bootstrap@next #--gives error
 --- Modify styles configuration to add Bootstrap CSS
     styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",

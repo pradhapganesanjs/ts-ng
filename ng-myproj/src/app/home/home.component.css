@@ -1,0 +1,24 @@
+.container-fluid{
+    height:100%;
+    display:table;
+    width: 100%;
+    padding: 0;
+  }
+   
+  .row-fluid {height: 100%; display:table-cell; vertical-align: middle;}
+   
+  .centering {
+    float:none;
+    margin:0 auto;
+  }
+
+  .login-div{
+      padding:20px;
+      width : 60%;
+      margin:0 auto;
+  }
+
+  /* #home div{
+     position: absolute;
+  }  */
+
