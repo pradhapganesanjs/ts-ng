@@ -1,4 +1,4 @@
--- VSC guide
+﻿-- VSC guide
     http://www.dotnetcurry.com/visualstudio/1340/visual-studio-code-tutorial
 
 -- Git - Proj reference
@@ -31,7 +31,7 @@ $ ng g module home
 $ ng g component home/component
 $ ng g m SomeModule --routing
 $ ng build --output-path ../resources/static
-$ npm install -save bootstrap": "4.0.0-beta.2
+$ npm install -save bootstrap@4.0.0-beta.2
 $ npm install -save bootstrap-css@4.0.0-alpha.5 --save-dev
 $ npm install –save bootstrap@next #--gives error
 --- Modify styles configuration to add Bootstrap CSS
@@ -46,3 +46,7 @@ $ npm install –save bootstrap@next #--gives error
         "../node_modules/tether/dist/js/tether.min.js",        
         "../node_modules/bootstrap/dist/js/bootstrap.min.js"
     ],
+
+--------------------------
+-- environment.ts to have proxy details
+-- architecture to use package for frontier
