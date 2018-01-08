@@ -6,15 +6,21 @@ import { UserService } from '../services/user/user.service';
 import { User } from '../services/user/user.bo';
 
 import { LoginFormComponent } from './login-form/login-form.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AccountsComponent } from './accounts/accounts.component';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 @NgModule({
-  declarations: [LoginFormComponent],
+  declarations: [LoginFormComponent, ProfileComponent, AccountsComponent],
   imports: [
     CommonModule,
     FormsModule,
     HttpModule
   ],
   exports : [
-    LoginFormComponent
+    LoginFormComponent,
+    DashboardComponent,
+    ProfileComponent,
+    AccountsComponent
   ],
   providers : [
     UserService,
