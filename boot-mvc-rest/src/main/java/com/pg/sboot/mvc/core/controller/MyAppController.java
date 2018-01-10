@@ -1,11 +1,13 @@
 package com.pg.sboot.mvc.core.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +21,83 @@ public class MyAppController {
 		mp.put("Cmplx", createEmps());
 		return mp;
 	}
+	
+	@RequestMapping(value="/login",method = RequestMethod.GET)
+	public Map<String,String> login(String username, String password) throws IOException {
+			Map<String,String> mp = new HashMap<String,String>();		
+			List<UserDocument> userList = createUsers();
+			if(userList==null || userList.size()==0){
+					mp.put("result", "Invalid UserId");
+					return mp;
+				}
+			
+			for(UserDocument user:userList){
+				if( (username.equals(user.getUserId())) && (password.equals(user.getUserPassword())) ){
+					mp.put("result", "Valid User");
+					return mp;
+				} 
+			}
+			mp.put("result", "Invalid UserId");
+			return mp;
+	}		
 
+	private List<UserDocument> createUsers(){
+		List<UserDocument> userList = new ArrayList<>();
+		userList.add(new UserDocument("001", "pradhap", "pradhap"));
+		userList.add(new UserDocument("002", "abc", "abc"));
+		userList.add(new UserDocument("003", "asdf", "asdf"));
+		userList.add(new UserDocument("004", "pg", "pg"));
+		return userList;
+	}
+	
+	public class UserDocument {
+
+		private String id;
+		private String userId;
+		private String userPassword;
+		private String active;
+		
+		public UserDocument(String id, String userId, String userPassword) {
+			this.id = id;
+			this.userId=userId;
+			this.userPassword = userPassword;
+					
+		}
+		
+		public String getId() {
+			return id;
+		}
+		public void setId(String id) {
+			this.id = id;
+		}
+		public String getUserId() {
+			return userId;
+		}
+		public void setUserId(String userId) {
+			this.userId = userId;
+		}
+		public String getUserPassword() {
+			return userPassword;
+		}
+		public void setUserPassword(String userPassword) {
+			this.userPassword = userPassword;
+		}
+		public String getActive() {
+			return active;
+		}
+		public void setActive(String active) {
+			this.active = active;
+		}
+		
+		@Override
+		public String toString() {		
+			return  "_Id:"+ this.id+
+					" userId:"+ this.userId+
+					" userPassword:"+ this.userPassword+
+					" active:"+ this.active;
+		}
+	}
+	
 	private List<Manager> createEmps() {
 		Employee dev1 = new Employee("DEV_001", "Dev");
 		dev1.name = "Pradhap";

@@ -1,4 +1,6 @@
-export class User {
+import { BaseServiceReqBo } from '../base/base.service.req';
+
+export class User extends BaseServiceReqBo {
     private _userName: string;
     private _password: string;
 

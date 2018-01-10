@@ -22,7 +22,28 @@ export class LoginFormComponent implements OnInit {
     this.userBo.userName = this.model.username;
     this.userBo.password = this.model.password;
 
-    this.userService.loginUser(this.userBo);
-    // this.router.navigate(['/']);
+    const userServProm = function(succ, fail){
+      const resServ: any = this.userService.loginUser(this.userBo);
+      console.log('resServ ' + resServ);
+
+      if (resServ && 'failed' === resServ.toString()) {
+        console.log('failed');
+        fail('failed');
+      } else {
+        succ(resServ);
+      }
+    };
+    const handleRes = function(data){
+      console.log('data ' + data);
+      this.router.navigate(['/dashboard']);
+    };
+    const handleFail = function(data){
+      this.router.navigate(['/']);
+    };
+
+    const prom = new Promise(userServProm)
+                    .then(handleRes)
+                    .catch(handleFail);
+
   }
 }

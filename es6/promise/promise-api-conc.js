@@ -1,7 +1,7 @@
-let isSuccess;
-let prom1 = new Promise(function (res, rej) {
+let isSuccess=true;
+let prom1 = new Promise(function (suc, fail) {
     if (isSuccess) {
-        res('Res:');
+        suc('Res:');
     }else{
         throw new Error('Undefinded')
     }
