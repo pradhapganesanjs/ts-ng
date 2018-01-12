@@ -6,16 +6,9 @@ import { HttpReq, HttpRes } from '../helpers/http-util';
 @Injectable()
 export class BaseService {
 
-    private userParam: URLSearchParams;
-    private reqOpts: RequestOptions;
-    private headers: Headers;
-
     constructor(private http: Http) {
-        this.userParam = new URLSearchParams();
-        this.reqOpts = new RequestOptions();
-        this.headers = new Headers();
-        this.headers.append('Content-Type', 'application/json');
-        this.reqOpts.headers = this.headers;
+        console.log('BaseService Construtor'
+        + this.http);
     }
 
     isAuth(authToken: string) {
@@ -25,14 +18,23 @@ export class BaseService {
     httpGet(req: HttpReq) {
         const resp: HttpRes = new HttpRes();
         const url: string = req.url;
+        const urlParams: URLSearchParams = req.params;
+        /*
         const props: any = Object.getOwnPropertyNames(req.params);
-
+        console.log('props ' + props);
+        const httpParam = new URLSearchParams();
         for (const prop of props){
-            this.userParam.append(prop, props[prop]);
+            const p: string = prop;
+            httpParam.append(p, props[prop]);
         }
-        this.reqOpts.params =  this.userParam;
+        console.log(' httpParam ' + httpParam);
+        */
+        const httpHeaders = new Headers();
+        httpHeaders.append('Content-Type', 'application/json');
 
-        return this.http.get(url, this.reqOpts)
+        const reqOpts = new RequestOptions({headers: httpHeaders, params: req.params});
+        console.log(' reqOpts.params ' + reqOpts.params);
+        return this.http.get(url, reqOpts)
                  .map(data => {
                         console.log(`http res: ${data}`);
                         resp.response = data.json();

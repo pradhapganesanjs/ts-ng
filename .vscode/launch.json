@@ -10,7 +10,7 @@
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "C:\\Users\\pg38446\\Tech\\Code Practice\\git.pradhapganesanjs\\ts-ng\\ng-myproj\\"
         }
     ]
 }

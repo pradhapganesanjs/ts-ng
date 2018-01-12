@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { User } from './user.bo';
-import { RequestOptions } from '@angular/http';
-import { URLSearchParams } from '@angular/http';
 import { BaseService } from '../base/base.service';
 import { HttpReq } from '../helpers/http-util';
 
@@ -13,21 +12,20 @@ export class UserService extends BaseService {
     loggedIn: boolean;
     private userPost: any = {};
 
+    constructor(private httpSub: Http) {
+        super(httpSub);
+        console.log('UserService Construtor'
+        + this.httpSub);
+    }
+
     loginUser(user: User) {
         this.loggedIn = false;
 
         const userHttpGet: HttpReq = new HttpReq('/api/login');
-        userHttpGet.params.username = user.userName;
-        userHttpGet.params.password = user.password;
+        userHttpGet.params.append('username', user.userName);
+        userHttpGet.params.append('password', user.password);
 
-        super.httpGet(userHttpGet).subscribe(
-            data => {
-                return data;
-            },
-            error => {
-                return 'failed';
-            }
-        );
+        return super.httpGet(userHttpGet);
     }
     /*fetchUser(user: User) {
         console.log(`userName: ${user.userName}, userPassword: ${user.password}`);

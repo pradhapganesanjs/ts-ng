@@ -1,0 +1,30 @@
+<div align="center">
+  <h1 style="color: blue">Frontier File Upload</h1> 
+
+<form method="POST" action="upload" enctype="multipart/form-data" name="upldForm">
+  <input type = "hidden" name = "LoginID" value = "LoginIDValue" />
+  <div align="center">
+    <table  width="40%" border="1" cellspacing="1" cellpadding="2">	    	
+	        <tr>
+	        	<td><label path="file">Select upload type</label></td>
+	        	<td>
+	        		<select name="filetype" id="filetype">
+				      <option value="select">Select</option>
+					  <option value="clientconfig">Client Meta Data</option>
+					  <option value="reportconfig">Report Schedule</option>
+					</select>
+	        	</td>
+	        </tr>
+	        <tr>
+	            <td><label path="file">Select a file to upload</label></td>
+	            <td><input type="file" name="file" /></td>
+	        </tr>	        
+	        <tr >
+	        	<th colspan="2" >
+	        		<input type="submit" value="Submit" onclick="return validation()"/>
+	        	</th>
+	        	</tr>
+      		</table>
+     	</div>
+</form>
+</div>

@@ -64,3 +64,7 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+/*
+*by default exclude support for es7 decorate. If want to use them add import 'reflect-metadata' manually.
+*/
+import 'reflect-metadata';

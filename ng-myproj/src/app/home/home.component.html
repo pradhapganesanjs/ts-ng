@@ -1,4 +1,5 @@
 
   <div class="login-div">
-    <pages-login-form></pages-login-form>
+    <alert-error [errMsg]="errorMsg" ></alert-error>
+    <pages-login-form (emitLoginResult)="receiveLoginStatus($event)"></pages-login-form>
   </div>

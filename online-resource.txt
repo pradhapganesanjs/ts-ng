@@ -26,14 +26,22 @@ To-be Invetigated
 --- how css to be packaged? Shared will have component. what about css base and extends..
 --- shared, modules, etc.. how data flows? code reuse...
 
+-------- ng -----------------------------------------------------------------------------
+
 $ ng new ng-myproj --skip-install --directory ./ng-myproj
 $ ng g module home
 $ ng g component home/component
 $ ng g m SomeModule --routing
 $ ng build --output-path ../resources/static
-$ npm install -save bootstrap@4.0.0-beta.2
-$ npm install -save bootstrap-css@4.0.0-alpha.5 --save-dev
-$ npm install –save bootstrap@next #--gives error
+----- npm ---------------------------------------------------------------------------------
+
+$ npm cache clean -f
+
+--- npm install ----------------------------------------------------------------------------
+$ npm install --save @ng-bootstrap/ng-bootstrap
+$ npm install --save bootstrap@4.0.0-beta.2
+$ npm install --save bootstrap-css@4.0.0-alpha.5 --save-dev
+$ npm install –-save bootstrap@next #--gives error
 --- Modify styles configuration to add Bootstrap CSS
     styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -46,7 +54,15 @@ $ npm install –save bootstrap@next #--gives error
         "../node_modules/tether/dist/js/tether.min.js",        
         "../node_modules/bootstrap/dist/js/bootstrap.min.js"
     ],
+$ npm install jquery --save
+    --"scripts": [
+         "../node_modules/jquery/dist/jquery.min.js"]
 
---------------------------
+$ npm i --save bootstrap-hover-dropdown       
+$ npm i --save twitter-bootstrap  --n/w
+
+$npm install json-typescript-mapper --save   //----- Uitiliy ----
+--------------------------------------------------------------------------------------------
 -- environment.ts to have proxy details
 -- architecture to use package for frontier
+

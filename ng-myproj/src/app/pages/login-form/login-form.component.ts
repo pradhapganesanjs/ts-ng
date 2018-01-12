@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../services/user/user.bo';
 
@@ -12,38 +11,46 @@ export class LoginFormComponent implements OnInit {
   private loading = false;
   private model: any = {};
 
-  constructor(private router: Router, private userBo: User, private userService: UserService ) { }
+  @Output() emitLoginResult = new EventEmitter<Map<string, string>>();
 
-  ngOnInit() {}
+  loginStatusMap: Map<string, string>;
+
+  constructor(private userBo: User,
+    private userService: UserService) {
+    console.log('LoginFormComponent Construtor'
+      + this.userBo + this.userService);
+  }
+
+  ngOnInit() { }
+
   login() {
-    console.log(`login success ${this.model.username}, ${this.model.password}`);
+    console.log(`login params ${this.model.username}, ${this.model.password}`);
     this.loading = true;
     console.log('userBo ' + this.userBo);
     this.userBo.userName = this.model.username;
     this.userBo.password = this.model.password;
 
-    const userServProm = function(succ, fail){
-      const resServ: any = this.userService.loginUser(this.userBo);
-      console.log('resServ ' + resServ);
+    this.userService.loginUser(this.userBo)
+      .subscribe(data => this.handleRes(data),
+      err => this.handleFail(err));
+  }
+  handleRes(data) {
+    console.log('i will handle the resp ' + data.response['error_code']);
+    this.loginStatusMap = new Map<string, string>();
+    this.loginStatusMap.set('status', 'fail');
+    this.loginStatusMap.set('error_msg', '');
 
-      if (resServ && 'failed' === resServ.toString()) {
-        console.log('failed');
-        fail('failed');
-      } else {
-        succ(resServ);
-      }
-    };
-    const handleRes = function(data){
-      console.log('data ' + data);
-      this.router.navigate(['/dashboard']);
-    };
-    const handleFail = function(data){
-      this.router.navigate(['/']);
-    };
-
-    const prom = new Promise(userServProm)
-                    .then(handleRes)
-                    .catch(handleFail);
-
+    if ('0' === data.response['error_code']) {
+      this.loginStatusMap.set('status', 'success');
+      this.emitLoginResult.emit(this.loginStatusMap);
+    } else {
+      this.loginStatusMap.set('error_msg', data.response['error_msg']);
+      this.emitLoginResult.emit(this.loginStatusMap);
+    }
+  }
+  handleFail(err) {
+    console.log('i will handle FAIL' + err);
+    this.loginStatusMap.set('error_msg', err);
+    this.emitLoginResult.emit(this.loginStatusMap);
   }
 }

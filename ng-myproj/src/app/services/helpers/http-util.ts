@@ -1,8 +1,9 @@
+import { URLSearchParams } from '@angular/http';
 
 export class HttpReq {
-    _params: Object;
-    constructor (private _url: string) { 
-        this._params = new Object();
+    _params: URLSearchParams;
+    constructor (private _url: string) {
+        this._params = new URLSearchParams();
     }
 
     get url(){
@@ -11,10 +12,10 @@ export class HttpReq {
     set url(urlP: string){
         this._url = urlP;
     }
-    get params(): any {
+    get params(): URLSearchParams {
         return this._params;
     }
-    set params(paramsP: any) {
+    set params(paramsP: URLSearchParams) {
         this._params = paramsP;
     }
 }
