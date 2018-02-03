@@ -1,0 +1,7 @@
+<mat-form-field>
+    <mat-select placeholder="Record Columns" (change)="onChange($event)">
+      <mat-option *ngFor="let col of recordColumns" [value]="col.value">
+        {{ undefined == col.viewValue ? col : col.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>

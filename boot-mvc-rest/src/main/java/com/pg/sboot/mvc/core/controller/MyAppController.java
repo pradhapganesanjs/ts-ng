@@ -6,14 +6,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 public class MyAppController {
+	List<ReportingTransDocument> reportList = null;
+	List<UserDocument> userList = null;
+	{
+		reportList = createReportTrans(100);
+		userList = createUsers();
+	}
 
 	@RequestMapping("/hello")
 	public @ResponseBody Map<String, List<Manager>> sayHello() {
@@ -23,10 +35,38 @@ public class MyAppController {
 		return mp;
 	}
 
+	@RequestMapping(value = "/signin", method = RequestMethod.POST)
+	public UserDocument signin(@RequestBody SigninCred scred) {
+		String userName = scred.getUserName();
+		String password = scred.getPassword();
+
+		System.out.println("updated signin " + userName + " " + password);
+		UserDocument userD = validateSignin(userName, password);
+
+		return userD;
+	}
+
+	private UserDocument validateSignin(String userName, String password) {
+
+		if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
+			return null;
+		}
+
+		try {
+			Optional<UserDocument> optUserDoc = userList.stream()
+					.filter(user -> userName.equals(user.getUserId()) && password.equals(user.getUserPassword())).findAny();
+			if (optUserDoc.isPresent()) {
+				return optUserDoc.get();
+			}
+		} catch (Exception e) {
+			System.err.println("exception e" + e.getMessage());
+		}
+		return null;
+	}
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public Map<String, String> login(String username, String password) throws IOException {
 		Map<String, String> mp = new HashMap<String, String>();
-		List<UserDocument> userList = createUsers();
 		if (userList == null || userList.size() == 0) {
 			mp.put("error_code", "-100");
 			mp.put("error_msg", "Invalid UserId");
@@ -47,28 +87,27 @@ public class MyAppController {
 		mp.put("result", "Invalid User details");
 		return mp;
 	}
-	
-	/*@RequestMapping(value = "/reports", method = RequestMethod.GET)
-	public Map<String, List<ReportingTransDocument>> reports() throws IOException {
-		
-		Map<String, List<ReportingTransDocument>> mp = new HashMap<String, List<ReportingTransDocument>>();
-		List<ReportingTransDocument> reportList = createReportTrans();
 
-		if (reportList == null || reportList.size() == 0) {
-			mp.put("result", null);
-			return mp;
-		}
+	/*
+	 * @RequestMapping(value = "/reports", method = RequestMethod.GET) public
+	 * Map<String, List<ReportingTransDocument>> reports() throws IOException {
+	 * 
+	 * Map<String, List<ReportingTransDocument>> mp = new HashMap<String,
+	 * List<ReportingTransDocument>>(); List<ReportingTransDocument> reportList =
+	 * createReportTrans();
+	 * 
+	 * if (reportList == null || reportList.size() == 0) { mp.put("result", null);
+	 * return mp; }
+	 * 
+	 * mp.put("result", reportList); return mp;
+	 * 
+	 * }
+	 */
 
-		mp.put("result", reportList);
-		return mp;
-
-	}	*/
-	
 	@RequestMapping(value = "/reports", method = RequestMethod.GET)
 	public List<ReportingTransDocument> reports() throws IOException {
-		
+
 		Map<String, List<ReportingTransDocument>> mp = new HashMap<String, List<ReportingTransDocument>>();
-		List<ReportingTransDocument> reportList = createReportTrans();
 
 		if (reportList == null || reportList.size() == 0) {
 			mp.put("result", null);
@@ -78,7 +117,33 @@ public class MyAppController {
 		mp.put("result", reportList);
 		return reportList;
 
-	}		
+	}
+
+	@RequestMapping(value = "/reportsbycrit", method = RequestMethod.POST)
+	public List<ReportingTransDocument> reportsByCrit(@RequestBody(required = false) ReportingTransDocument report)
+			throws IOException {
+
+		if (null == report)
+			return reportList;
+		System.out.format("report crit %s", report.toString());
+
+		List<ReportingTransDocument> returnReportList = reportList.parallelStream().filter(each -> {
+			return checkMatch(report.getId(), each.getId()) || checkMatch(report.getFlow(), each.getFlow())
+					|| checkMatch(report.getSourceId(), each.getSourceId())
+					|| checkMatch(report.getStatus(), each.getStatus())
+					|| checkMatch(report.getSourceStatus(), each.getSourceStatus())
+					|| checkMatch(report.getSourceSystem(), each.getSourceSystem())
+					|| checkMatch(report.getSourceUId(), each.getSourceUId())
+					|| checkMatch(report.getSourceVersion(), each.getSourceVersion());
+		}).collect(Collectors.toList());
+		System.out.println("return list count " + returnReportList.size());
+		return returnReportList;
+	}
+
+	private boolean checkMatch(String repKey, String itemKey) {
+		System.out.format(" repkey: %s , itemKey: %s", repKey, itemKey);
+		return null != repKey && repKey.equalsIgnoreCase(itemKey);
+	}
 
 	private List<UserDocument> createUsers() {
 		List<UserDocument> userList = new ArrayList<>();
@@ -89,31 +154,37 @@ public class MyAppController {
 		return userList;
 	}
 
-	static List<ReportingTransDocument> createReportTrans(){
+	static List<ReportingTransDocument> createReportTrans(final int COUNT_THRESHOLD_PARAM) {
 		List<ReportingTransDocument> repTransList = new ArrayList<>();
-		
-		repTransList.add(new ReportingTransDocument("AAAA", "AAAA", "AAAA", "AAAA", "AAAA", "AAAA", "AAAA", "AAAA", "AAAA", "AAAA", true/*, LocalDateTime.now()*/));
-		repTransList.add(new ReportingTransDocument("BBB", "BBB", "BBB", "BBB", "BBB", "BBB", "BBB", "BBB", "BBB", "BBB", true/*, LocalDateTime.now()*/));		
-		repTransList.add(new ReportingTransDocument("C", "C", "C", "C", "C", "C", "C", "C", "C", "C", true/*, LocalDateTime.now()*/));		
-		repTransList.add(new ReportingTransDocument("DDDDDDD", "DDDDDDD", "DDDDDDD", "DDDDDDD", "DDDDDDD", "DDDDDDD", "DDDDDDD", "DDDDDDD", "DDDDDDD", "DDDDDDD", true/*, LocalDateTime.now()*/));		
-		repTransList.add(new ReportingTransDocument("EE", "EE", "EE", "EE", "EE", "EE", "EE", "EE", "EE", "EE", true/*, LocalDateTime.now()*/));		
-		repTransList.add(new ReportingTransDocument("FFFFF", "FFFFF", "FFFFF", "FFFFF", "FFFFF", "FFFFF", "FFFFF", "FFFFF", "FFFFF", "FFFFF", true/*, LocalDateTime.now()*/));				
-		repTransList.add(new ReportingTransDocument("GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", true/*, LocalDateTime.now()*/));			
-		repTransList.add(new ReportingTransDocument("HHHH", "HHHH", "HHHH", "HHHH", "HHHH", "HHHH", "HHHH", "HHHH", "HHHH", "HHHH", true/*, LocalDateTime.now()*/));					
-		repTransList.add(new ReportingTransDocument("IIIIIIIIIIIIII", "IIIIIIIIIIIIII", "IIIIIIIIIIIIII", "IIIIIIIIIIIIII", "IIIIIIIIIIIIII", "IIIIIIIIIIIIII", "IIIIIIIIIIIIII", "IIIIIIIIIIIIII", "IIIIIIIIIIIIII", "IIIIIIIIIIIIII", true/*, LocalDateTime.now()*/));					
-		repTransList.add(new ReportingTransDocument("JJJJ", "JJJJ", "JJJJ", "JJJJ", "JJJJ", "JJJJ", "JJJJ", "JJJJ", "JJJJ", "JJJJ", true/*, LocalDateTime.now()*/));							
-		repTransList.add(new ReportingTransDocument("KKKKK", "KKKKK", "KKKKK", "KKKKK", "KKKKK", "KKKKK", "KKKKK", "KKKKK", "KKKKK", "KKKKK", true/*, LocalDateTime.now()*/));			
-		repTransList.add(new ReportingTransDocument("LLL", "LLL", "LLL", "LLL", "LLL", "LLL", "LLL", "LLL", "LLL", "LLL", true/*, LocalDateTime.now()*/));					
-		repTransList.add(new ReportingTransDocument("MM", "MM", "MM", "MM", "MM", "MM", "MM", "MM", "MM", "MM", true/*, LocalDateTime.now()*/));				
-		repTransList.add(new ReportingTransDocument("N", "N", "N", "N", "N", "N", "N", "N", "N", "N", true/*, LocalDateTime.now()*/));				
-		repTransList.add(new ReportingTransDocument("OOOO", "OOOO", "OOOO", "OOOO", "OOOO", "OOOO", "OOOO", "OOOO", "OOOO", "OOOO", true/*, LocalDateTime.now()*/));						
-		repTransList.add(new ReportingTransDocument("PP", "PP", "PP", "PP", "PP", "PP", "PP", "PP", "PP", "PP", true/*, LocalDateTime.now()*/));						
-		repTransList.add(new ReportingTransDocument("QQQQQQ", "QQQQQQ", "QQQQQQ", "QQQQQQ", "QQQQQQ", "QQQQQQ", "QQQQQQ", "QQQQQQ", "QQQQQQ", "QQQQQQ", true/*, LocalDateTime.now()*/));						
-		repTransList.add(new ReportingTransDocument("RR", "RR", "RR", "RR", "RR", "RR", "RR", "RR", "RR", "RR", true/*, LocalDateTime.now()*/));		
-		
+
+		final int COUNT_THRESHOLD = COUNT_THRESHOLD_PARAM <= 0 ? 1000 : COUNT_THRESHOLD_PARAM;
+
+		for (int i = 0; i < COUNT_THRESHOLD; i++) {
+			repTransList.add(new ReportingTransDocument("ID_" + i, genRandString(), genRandString(), genRandString(),
+					genRandString(), genRandString(), genRandString(), genRandString(), genRandString(),
+					genRandString(), genRandBoolean()));
+		}
+
 		return repTransList;
 	}
-	
+
+	private static boolean genRandBoolean() {
+		return Math.random() > 0.5 ? true : false;
+	}
+
+	private static String genRandString() {
+		int strLen = (int) (Math.random() * 10.0);
+		strLen = strLen == 0 ? 10 : strLen;
+
+		StringBuffer strBuf = new StringBuffer();
+
+		for (int c = 0; c < strLen; c++) {
+			char chr = (char) (65 + (int) (Math.random() * 26.0));
+			strBuf.append(chr);
+		}
+		return strBuf.toString();
+	}
+
 	public class UserDocument {
 
 		private String id;
@@ -328,201 +399,25 @@ class Address {
 
 }
 
-class ReportingTransDocument {
+class SigninCred {
 
-	public static final String[] TOP_LEVEL_FIELDS = { "id", "status", "reasonCodes", "stream", "flow", "sourceUId",
-			"sourceId", "sourceStatus", "regReportingRef", "receivedTs", "publishedTs", "executionTs", "lastUpdatedTs",
-			"instructions", "rdsEligible" };
+	private String userName;
+	private String password;
 
-	public String id; // reghub generated unique id for each messages
-	public String status; // reghub reporting status e.g. REPORTABLE, NON_REPORTABLE, EXCEPTION, PENDING,
-	public String stream; // reporting stream (always 4 char) e.g. M2TR, M2PR, M2PO
-	public String flow; // reporting asset class / product (always 3 char) e.g. CEQ (cash equities), CFI
-	// source record fields
-	public String sourceSystem; // upstream source system generated the message e.g. TPS, PRIMO
-	public String sourceUId; // unique id for a message received from source e.g. OceanId for transaction
-	public String sourceId; // trade/quote/order id
-	public String sourceStatus; // always normalised to NEW, AMEND and CANCEL
-	public String sourceVersion; // trade/quote/order version
-	public String regReportingRef; // used as reporting id for trade/quote/order/transaction e.g. stream + flow +
-
-	// date fields
-	public LocalDateTime receivedTs; // timestamp when entity is received in Reghub
-	public LocalDateTime publishedTs; // trade activity timestamp .i.e when upstream published on RIO
-	public LocalDateTime executionTs; // trade generation/execution/booked timestamp
-	public LocalDateTime lastUpdatedTs; // timestamp of last activity in reghub, classical updated timestamp for reghub
-
-	private boolean rdsEligible; // flag that holds RDS Eligibility used by RDS Stream
-
-	public Map<String, Object> info = new HashMap<String, Object>();
-
-	public List<String> instructions = new ArrayList<String>();
-	public List<String> reasonCodes = new ArrayList<String>();
-	
-	
-	public ReportingTransDocument() {
-	}
-	
-	public ReportingTransDocument(String id, String status, String stream, String flow, String sourceSystem,
-			String sourceId, String sourceUId, String sourceStatus, String sourceVersion, String regReportingRef,
-			boolean rdsEligible/*, LocalDateTime receivedTs*/) {
-		this.id = id;
-		this.status = status;
-		this.stream = stream;
-		this.flow = flow;
-		this.sourceSystem = sourceSystem;
-		this.sourceId = sourceId;
-		this.sourceUId = sourceUId;
-		this.sourceStatus = sourceStatus;
-		this.sourceVersion = sourceVersion;
-		this.regReportingRef = regReportingRef;
-		this.rdsEligible = rdsEligible;
-//		this.receivedTs = receivedTs;
-				
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setLastUpdatedTs(LocalDateTime lastUpdatedTs) {
-		this.lastUpdatedTs = lastUpdatedTs;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public boolean isRdsEligible() {
-		return rdsEligible;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setRdsEligible(boolean rdsEligible) {
-		this.rdsEligible = rdsEligible;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public List<String> getReasonCodes() {
-		return reasonCodes;
-	}
-
-	public void setReasonCodes(List<String> reasonCodes) {
-		this.reasonCodes = reasonCodes;
-	}
-
-	public String getStream() {
-		return stream;
-	}
-
-	public void setStream(String stream) {
-		this.stream = stream;
-	}
-
-	public String getFlow() {
-		return flow;
-	}
-
-	public void setFlow(String flow) {
-		this.flow = flow;
-	}
-
-	public String getSourceSystem() {
-		return sourceSystem;
-	}
-
-	public void setSourceSystem(String sourceSystem) {
-		this.sourceSystem = sourceSystem;
-	}
-
-	public String getSourceUId() {
-		return sourceUId;
-	}
-
-	public void setSourceUId(String sourceUId) {
-		this.sourceUId = sourceUId;
-	}
-
-	public String getSourceId() {
-		return sourceId;
-	}
-
-	public void setSourceId(String sourceId) {
-		this.sourceId = sourceId;
-	}
-
-	public String getSourceStatus() {
-		return sourceStatus;
-	}
-
-	public void setSourceStatus(String sourceStatus) {
-		this.sourceStatus = sourceStatus;
-	}
-
-	public String getSourceVersion() {
-		return sourceVersion;
-	}
-
-	public void setSourceVersion(String sourceVersion) {
-		this.sourceVersion = sourceVersion;
-	}
-
-	public String getRegReportingRef() {
-		return regReportingRef;
-	}
-
-	public void setRegReportingRef(String regReportingRef) {
-		this.regReportingRef = regReportingRef;
-	}
-
-	public LocalDateTime getReceivedTs() {
-		return receivedTs;
-	}
-
-	public void setReceivedTs(LocalDateTime receivedTs) {
-		this.receivedTs = receivedTs;
-	}
-
-	public LocalDateTime getPublishedTs() {
-		return publishedTs;
-	}
-
-	public void setPublishedTs(LocalDateTime publishedTs) {
-		this.publishedTs = publishedTs;
-	}
-
-	public LocalDateTime getExecutionTs() {
-		return executionTs;
-	}
-
-	public void setExecutionTs(LocalDateTime executionTs) {
-		this.executionTs = executionTs;
-	}
-
-	public Map<String, Object> getInfo() {
-		return info;
-	}
-
-	public void setInfo(Map<String, Object> info) {
-		this.info = info;
-	}
-
-	public List<String> getInstructions() {
-		return instructions;
-	}
-
-	public void setInstructions(List<String> instructions) {
-		this.instructions = instructions;
-	}
-
-	@Override
-	public String toString() {
-		return "_Id:" + this.id + " status:" + this.status + " lastUpdatedTs:" + this.lastUpdatedTs;
-	}
 }

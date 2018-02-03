@@ -1,0 +1,24 @@
+<div class="panel-form">
+    <form class="">
+        <div class="row">
+            <div class="col-md-3 select-mat">
+                <app-select-mat [recordColumns]="recordColumns" (selectedColumn)="onSelectedColumn($event)"></app-select-mat>
+            </div>
+
+            <div class="col-md-3 input-mat">
+                <app-input-mat [placeHolderIn]="placeHolder" [disabledIn]="isEditableInput" (InputEvt)="handleInput($event)"></app-input-mat>
+            </div>
+            <div class="col-md-2 button-mat">
+                <button type="button" class="btn btn-primary" mat-raised-button [disabled]="!isReadyToSubmit" (click)="fetchClickAction()">Fetch</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div>
+        <ul>
+            <li *ngFor="let rec of resultReports">
+                id : {{rec ? rec.id : '-na-'}}
+                flow : {{rec ? rec.flow : '-na-' }}
+            </li>
+        </ul>
+</div>

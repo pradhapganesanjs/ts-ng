@@ -38,10 +38,21 @@ $ ng build --output-path ../resources/static
 $ npm cache clean -f
 
 --- npm install ----------------------------------------------------------------------------
-$ npm install --save @ng-bootstrap/ng-bootstrap
+$ npm i bootstrap@4.0.0-alpha.5 jquery popper.js -P --save
+        "styles": [
+        "styles.css",
+        "../node_modules/bootstrap/dist/css/bootstrap.css"
+        ],
+
+        "scripts": [
+        "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/popper.js/dist/umd/popper.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.js"
+        ],
+import NgbModule.forRoot()
+
 $ npm install --save bootstrap@4.0.0-beta.2
 $ npm install --save bootstrap-css@4.0.0-alpha.5 --save-dev
-$ npm install –-save bootstrap@next #--gives error
 --- Modify styles configuration to add Bootstrap CSS
     styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -59,10 +70,44 @@ $ npm install jquery --save
          "../node_modules/jquery/dist/jquery.min.js"]
 
 $ npm i --save bootstrap-hover-dropdown       
-$ npm i --save twitter-bootstrap  --n/w
+$ npm i bootstrap@next jquery popper.js -P --save
 
-$npm install json-typescript-mapper --save   //----- Uitiliy ----
+
+$ npm install json-typescript-mapper --save   //----- Uitiliy ----
+
+$ npm install tsimmutable --save-dev
 --------------------------------------------------------------------------------------------
 -- environment.ts to have proxy details
 -- architecture to use package for frontier
 
+-------Example: jQuery - usage --------------------------
+import * as $ from 'jquery';
+  ngOnInit() {
+    $('ul.nav li.dropdown').hover(function() {
+      $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+    }, function() {
+      $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+    });
+----- Example: alias for folders ----/
+tsconfig.json..
+ {
+     ....
+     "compilerOptions": {
+        ...
+            "baseUrl": "./src", 
+            "paths": {
+                "@app/*": ["./app/*"]
+            } 
+     }
+ }
+
+
+  "baseUrl": "./src",
+  "paths": {
+    "@app/*": [ "app/*" ],
+    "@assets/*": [ "assets/*" ],
+    "@env": [ "environments/environment" ],
+    "@pages/*": [ "pages/*" ],
+    "@services/*": [ "services/*" ],
+    "@theme/*": [ "theme/*" ]
+  }

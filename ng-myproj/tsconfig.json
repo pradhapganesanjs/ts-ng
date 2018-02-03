@@ -14,10 +14,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]  
+    ],
+    "baseUrl": ".", 
+    "paths": {
+      "@app/*": ["app/*"]
+    }   
   },
   "include": [
     "./src/*",
     "./node_modules/json-typescript-mapper/libs/utils.ts"
-  ] 
+  ]
 }

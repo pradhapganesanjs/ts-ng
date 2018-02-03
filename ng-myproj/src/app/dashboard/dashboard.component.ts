@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UserService, } from '@app/core';
+import { Observable } from 'rxjs/Observable';
 
-declare const $: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -9,21 +10,25 @@ declare const $: any;
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  userLoggedIn = false;
+
+  constructor(private router: Router, private userService: UserService) { }
 
   ngOnInit() {
-
-    $('ul.nav li.dropdown').hover(function() {
-      $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-    }, function() {
-      $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-    });
-
-    // usage is straightforward:
-    /*
-    $(document).ready(function() {
-      $('.js-activated').dropdownHover().dropdown();
-    });*/
+    //this.userService.getLoggedinUser().map(lgflg => this.userLoggedIn = lgflg);
+    this.userService.isUserSignedin().map(lgflg => this.userLoggedIn = lgflg);
+    console.log('this.userService.loggedIn  ' + this.userLoggedIn);
+    if (this.userLoggedIn) {
+      this.router.navigate(['/logindashboard']);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
 
+  handleNavbarRouter(path: string) {
+    console.log(' handleNavbarRouter ' + path);
+    const routArr: string[] = [];
+    routArr.push(path);
+    this.router.navigate(routArr);
+  }
 }

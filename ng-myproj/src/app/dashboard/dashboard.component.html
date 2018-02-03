@@ -1,3 +1,5 @@
-
-<core-navbar></core-navbar>
-<router-outlet></router-outlet>
+<div class="container">
+    <core-navbar (emitNavbarRouter)="handleNavbarRouter($event)"></core-navbar>
+    
+    <router-outlet></router-outlet>
+</div>
