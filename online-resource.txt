@@ -76,6 +76,8 @@ $ npm i bootstrap@next jquery popper.js -P --save
 $ npm install json-typescript-mapper --save   //----- Uitiliy ----
 
 $ npm install tsimmutable --save-dev
+
+$ npm install --save ag-grid-angular ag-grid ag-grid-enterprise
 --------------------------------------------------------------------------------------------
 -- environment.ts to have proxy details
 -- architecture to use package for frontier
