@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+	<parent>
+		<groupId>com.citi.frontier.frontier</groupId>
+		<artifactId>frontier</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>frontier-ng</artifactId>
+	<name>frontier-ng</name>
+	<description>frontier-ng</description>
+	<packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
+
+	<properties>
+		<project.ng.location>./src/main/frontier-ng</project.ng.location>
+		<static.dest.location>../frontier-boot/src/main/resources/static</static.dest.location>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.6</version>
+
+				<configuration>
+					<workingDirectory>src/main/frontier-ng</workingDirectory>
+					<installDirectory>${project.ng.location}</installDirectory>
+				</configuration>
+
+				<executions>
+
+					<!-- <execution> <id>install-node-and-npm</id> <goals> <goal>install-node-and-npm</goal> 
+						</goals> <configuration> <nodeVersion>v8.9.4</nodeVersion> <npmVersion>5.5.1</npmVersion> 
+						<nodeDownloadRoot>http://nodejs.org/dist/</nodeDownloadRoot> <workingDirectory>src/main/frontier-ng</workingDirectory> 
+						<installDirectory>${project.ng.location}</installDirectory> </configuration> 
+						</execution> <execution> <id>npm-install</id> <goals> <goal>npm</goal> </goals> 
+						<phase>generate-resources</phase> <configuration> <noProxy>true</noProxy> 
+						</configuration> </execution> -->
+
+					<execution>
+						<id>npm run-script</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run-script prod</arguments>
+							<installDirectory>${project.ng.location}</installDirectory>
+							<workingDirectory>${project.ng.location}</workingDirectory>
+							<noProxy>true</noProxy>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${static.dest.location}</directory>
+							<includes>
+								<include>**/**</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<overwrite>true</overwrite>
+							<outputDirectory>${static.dest.location}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/${project.ng.location}/dist</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>${project.basedir}/${project.ng.location}/dist</directory>
+				<includes>
+					<include>**/**</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+</project>

@@ -1,0 +1,49 @@
+<div align="center">
+  <h2 style="color: blue">Frontier - Initial Data Setup</h2>
+  <hr/>
+</div>
+
+<div align="center">
+  <alert-msg></alert-msg>
+</div>
+
+<div align="center">
+  <form name="uploadForm" (ngSubmit)="thisF.form.valid && uploadFile()" #thisF="ngForm" novalidate>
+    <input type="hidden" name="LoginID" value="LoginIDValue" />
+    <div align="center">
+      <table width="80%" border="1" cellspacing="1" cellpadding="2">
+        <tr>
+          <td>
+            <label path="file">{{script._conf_lab_seltype}}</label>
+          </td>
+          <td>
+            <select name="filetype" id="filetype" [(ngModel)]="fileUploadType" #filetype="ngModel" required [ngClass]="{ 'has-error': thisF.submitted && fileUploadType === 'select' }">
+              <option value="select">Select</option>
+              <option value="reportingFields">Reporting Fields</option>
+              <option value="usersList">Users List</option>
+            </select>
+            <div *ngIf="thisF.submitted && fileUploadType === 'select'">
+              <p class="input-error">Please select your upload type</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label path="file">{{script._conf_lab_selupload}}</label>
+          </td>
+          <td>
+            <input type="file" name="file" (change)="addFileToUpload($event.target.files)" />
+            <div *ngIf="thisF.submitted && !fileToUpload">
+              <p class="input-error">Please select a file to upload</p>
+            </div>
+          </td>
+        </tr>
+        <tr align="center">
+          <th colspan="2">
+            <button class="btn btn-primary">{{script._conf_btn_submit}}</button>
+          </th>
+        </tr>
+      </table>
+    </div>
+  </form>
+</div>

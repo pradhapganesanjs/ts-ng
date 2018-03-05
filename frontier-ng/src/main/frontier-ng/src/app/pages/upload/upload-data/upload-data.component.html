@@ -1,0 +1,47 @@
+<div align="center">
+	<h2 style="color: blue">Frontier File Upload</h2>
+	<hr/>
+</div>
+
+<div>
+	<alert-msg></alert-msg>
+</div>
+
+<div class="jumbotron d-flex align-items-center">
+	<div class="col-md-10 col-md-offset-3">
+
+		<div class="panel-form">
+			<form class="">
+				<div class="row">
+					<div class="col-md-3">
+						<label path="file">{{scripts._lab_seltype}}</label>
+					</div>
+					<div class="col-md-3 select-mat">
+						<app-select-mat 
+									[itemsMap]="filetypes" 
+									[selectedVal]="selFileType"
+									(selectedItem)="selFileType=$event"></app-select-mat>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<label path="file">{{scripts._lab_selupload}}</label>
+					</div>
+					<div class="col-md-3 input-mat">
+						<input type="file" name="file" (change)="uploadFile($event.target.files)" />
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div class="col-md-2 button-mat">
+						<button type="button" class="btn btn-primary" mat-raised-button [disabled]="('select'===selFileType)" (click)="uploadSubmit()">{{scripts._btn_submit}}</button>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+</div>

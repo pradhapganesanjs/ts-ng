@@ -1,0 +1,16 @@
+<mat-card class="box">
+  <mat-card-header>
+    <div mat-card-avatar class=""></div>
+    <mat-card-title>{{title}}</mat-card-title>
+    <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      {{content}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button class="btn btn-secondary" (click)="emitConfirm($event)">{{btn_lab_confirm}}</button>
+    <button mat-raised-button class="btn btn-primary" (click)="emitCancel($event)">{{btn_lab_cancel}}</button>
+  </mat-card-actions>
+</mat-card>

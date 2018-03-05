@@ -1,0 +1,46 @@
+<div align="center">
+  <h2 style="color: blue">Frontier Reports By Criteria</h2>
+  <hr/>
+</div>
+<div>
+<alert-msg></alert-msg>
+</div>
+<div class="panel-form">
+  <form class="">
+      <div class="row">
+          <div class="col-md-3 select-mat">
+              <app-select-mat [itemsMap]="recordColumns"
+                              [selectedVal]="selectedVal"     
+                              (selectedItem)="selectedVal=$event"></app-select-mat>
+          </div>
+
+          <div class="col-md-3 input-mat">
+              <app-input-mat [placeHolderIn]="placeHolder" 
+                             [disabledIn]="!('select'===selectedVal)" 
+                             (InputEvt)="inputval=$event" 
+                             [inputval]="inputval"></app-input-mat>
+          </div>
+
+          <div class="col-md-1 button-mat">
+              <button type="button" class="btn btn-primary" mat-raised-button [disabled]="(''=== this.inputval)" (click)="fetchAction()">Fetch</button>
+          </div>
+          <div class="col-md-1 button-mat">
+                  <button type="button" class="btn btn-secondary" mat-raised-button [disabled]="(''=== this.inputval)" (click)="resetAction()">Reset</button>
+          </div>
+      </div>
+  </form>
+  <hr/>
+</div>    
+<div>
+
+ <infinite-ref-ag-grid 
+      [cacheBlockSizeIn]="cacheBlockSizeIn"
+      [colHeaders$]="colHeadersObs" 
+      [rowDataRepo$] = "rowDataObs"        
+      [dataSrcAction$]="dataSrcActionObs"
+      [showLoadBusy$]="showLoadBusy$"
+      (emitDataPuller)="pullMoreData($event)"
+  >
+  </infinite-ref-ag-grid>
+
+</div>

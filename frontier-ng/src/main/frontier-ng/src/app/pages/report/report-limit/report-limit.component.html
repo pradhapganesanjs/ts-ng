@@ -1,0 +1,22 @@
+<div align="center">
+		<h2 style="color: blue">Frontier Reports Limit Pagination</h2>
+		<hr/>
+</div>
+<div>
+	<alert-msg></alert-msg>
+</div>
+<!--
+<div class="col-md-1 button-mat">
+    <button type="button" class="btn btn-primary" mat-raised-button (click)="fetchMore()">Fetch More</button>
+</div>
+-->
+<div>
+	<!-- <simple-ag-grid [colHeadersObsrv]="colHeadersObs" [rowDataObsrv]="rowDataObs"></simple-ag-grid> -->
+	<infinite-ag-grid 
+			[colHeadersObsrv]="colHeadersObs" 
+			[rowDataObsrv]="rowDataObs"
+			[cacheBlockSizeIn]="cacheBlockSizeIn"
+			(emitDataPuller)="pullMoreData($event)"
+			>
+	</infinite-ag-grid>
+</div>

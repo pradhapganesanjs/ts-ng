@@ -1,0 +1,12 @@
+<div>
+<ag-grid-angular #agGrid style="height: 600px;" class="ag-theme-fresh"
+        [columnDefs] = "colmnObs | async"
+        [pagination]="true"
+        [enableColResize]="true"
+        [enableSorting]="true"
+        [paginationAutoPageSize]="true"
+        [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+        (gridReady)="onGridReady($event)"
+        >
+</ag-grid-angular>
+</div>

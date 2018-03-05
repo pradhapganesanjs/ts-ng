@@ -1,0 +1,10 @@
+<div class="jumbotron d-flex justify-content-center">
+    <inline-confirm 
+        title="Logout" 
+        subtitle="confirm" 
+        content="Are you sure, You want to logout?" 
+        btn_lab_confirm="Logout" 
+        btn_lab_cancel="Cancel"
+        (confirmEmitter)="handleConfirm($event)" (cancelEmitter)="handleCancel($event)">
+    </inline-confirm>
+</div>

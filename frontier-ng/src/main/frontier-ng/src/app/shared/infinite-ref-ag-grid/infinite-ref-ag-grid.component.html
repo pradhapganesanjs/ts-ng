@@ -1,0 +1,13 @@
+<div align="right">
+    <label style="margin-left: 20px;">
+        <!--  class="btn btn-primary" -->
+        <button (click)="onBtExport()">Export to CSV</button>
+    </label>
+</div>
+<div>
+
+    <ag-grid-angular #agGrid style="height: 600px;" class="ag-theme-fresh" 
+                    [columnDefs]="columnDefs$ | async" 
+                    [gridOptions]="gridOptions">
+    </ag-grid-angular>
+</div>

@@ -1,0 +1,25 @@
+
+  <div>
+      <ag-grid-angular #agGrid style="height: 600px;" class="ag-theme-fresh"
+          [columnDefs] = "colmnObs | async"
+          [pagination]="true"
+          [enableColResize]="true"
+          [enableSorting]="true"
+          [datasource]="gDataSrc"
+          [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+          [overlayLoadingTemplate]="overlayLoadingTemplate"
+          rowModelType="infinite"
+          [paginationAutoPageSize]="true"
+          [getRowNodeId]="getRowNodeId"
+          (gridReady)="onGridReady($event)"
+          [cacheBlockSize]="cacheBlockSizeIn"
+          >
+  </ag-grid-angular>
+  </div>
+
+  <!--
+[datasource]="gDataSrc"
+[paginationAutoPageSize]="true"
+[paginationPageSize]="cacheBlockSizeIn"
+[cacheBlockSize]="cacheBlockSizeIn"
+  -->
