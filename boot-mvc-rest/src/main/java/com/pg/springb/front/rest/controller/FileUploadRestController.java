@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.citi.frontier.util.FrontierConstants;
+import com.pg.springb.front.util.FrontierConstants;
 import com.pg.springb.front.documents.FileProcessLogDocument;
 import com.pg.springb.front.rest.helper.ApiCommonResponse;
 import com.pg.springb.front.rest.helper.Error;

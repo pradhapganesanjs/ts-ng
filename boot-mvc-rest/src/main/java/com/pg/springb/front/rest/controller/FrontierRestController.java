@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.citi.frontier.util.FrontierServiceUtil;
+import com.pg.springb.front.util.FrontierServiceUtil;
 import com.pg.springb.front.controller.FrontierController;
 import com.pg.springb.front.documents.EmailSentLogDocument;
 import com.pg.springb.front.documents.ReportingTransDocument;

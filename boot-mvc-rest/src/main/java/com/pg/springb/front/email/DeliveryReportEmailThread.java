@@ -5,8 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.citi.frontier.util.MailSender;
-import com.citi.frontier.util.XLReportSentFileWriter;
+import com.pg.springb.front.util.MailSender;
+import com.pg.springb.front.util.XLReportSentFileWriter;
 import com.pg.springb.front.documents.EmailSentLogDocument;
 
 public class DeliveryReportEmailThread implements Runnable {

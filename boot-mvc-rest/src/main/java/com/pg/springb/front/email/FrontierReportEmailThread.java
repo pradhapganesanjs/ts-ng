@@ -7,9 +7,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.citi.frontier.util.FileWriterFactory;
-import com.citi.frontier.util.FrontierConstants;
-import com.citi.frontier.util.MailSender;
+import com.pg.springb.front.util.FileWriterFactory;
+import com.pg.springb.front.util.FrontierConstants;
+import com.pg.springb.front.util.MailSender;
 import com.pg.springb.front.documents.EmailSentLogDocument;
 import com.pg.springb.front.documents.ReportFieldsEntityMapping;
 import com.pg.springb.front.documents.ReportScheduleDocument;

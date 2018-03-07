@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.citi.frontier.util.FrontierServiceUtil;
+import com.pg.springb.front.util.FrontierServiceUtil;
 import com.pg.springb.front.documents.ClientConfigDocument;
 import com.pg.springb.front.documents.EmailSentLogDocument;
 import com.pg.springb.front.documents.ReportScheduleDocument;

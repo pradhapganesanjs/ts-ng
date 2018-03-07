@@ -15,7 +15,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import com.citi.frontier.util.FrontierConstants;
+import com.pg.springb.front.util.FrontierConstants;
 import com.mongodb.DBCollection;
 
 /* This approach can be used for running logic after the Spring context has been initialized, 

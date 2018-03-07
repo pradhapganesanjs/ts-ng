@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication(scanBasePackages={"com.citi.frontier"})
+@SpringBootApplication(scanBasePackages={"com.pg.springb.front"})
 @EnableScheduling
-@EnableMongoRepositories(basePackages = {"com.citi.frontier"})
+@EnableMongoRepositories(basePackages = {"com.pg.springb.front"})
 public class FrontierBootApplication {
 	
 	public static void main(String[] args) {

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.citi.frontier.util.FrontierServiceUtil;
+import com.pg.springb.front.util.FrontierServiceUtil;
 import com.pg.springb.front.service.FileUploadService;
 import com.pg.springb.front.service.FrontierService;
 
