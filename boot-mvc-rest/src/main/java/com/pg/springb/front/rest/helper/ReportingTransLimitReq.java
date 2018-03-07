@@ -1,4 +1,4 @@
-package com.citi.frontier.rest.helper;
+package com.pg.springb.front.rest.helper;
 
 import com.pg.springb.front.documents.ReportingTransDocument;
 

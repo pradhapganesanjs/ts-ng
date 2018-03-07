@@ -1,4 +1,4 @@
-package com.citi.frontier.rest.controller;
+package com.pg.springb.front.rest.controller;
 
 import java.util.Arrays;
 import java.util.List;

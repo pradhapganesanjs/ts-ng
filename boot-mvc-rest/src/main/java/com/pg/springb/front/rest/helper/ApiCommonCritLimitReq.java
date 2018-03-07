@@ -1,8 +1,6 @@
-package com.citi.frontier.rest.helper;
+package com.pg.springb.front.rest.helper;
 
-import com.pg.springb.front.documents.ReportingTransDocument;
-
-public class ReportingTransLimitReq extends ReportingTransDocument{
+public class ApiCommonCritLimitReq<T> {
 	private String lastId;
 	private int start;
 	private int limit;

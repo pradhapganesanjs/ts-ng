@@ -1,0 +1,328 @@
+package com.citi.frontier.service;
+
+import java.util.List;
+
+<<<<<<< HEAD
+=======
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+>>>>>>> e3556e70d5a0e84e6248c2d6f30aa196c21d6b07
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Service;
+
+import com.citi.frontier.documents.ActiveHostDocument;
+import com.citi.frontier.documents.ClientConfigDocument;
+//import com.citi.frontier.documents.ClientEmailProcessDocument;
+import com.citi.frontier.documents.FileProcessLogDocument;
+import com.citi.frontier.documents.ReportFieldsDocument;
+import com.citi.frontier.documents.ReportScheduleDocument;
+import com.citi.frontier.documents.ReportSentLogDocument;
+//import com.citi.frontier.documents.ReportingFieldsDocument;
+import com.citi.frontier.documents.ReportingTransDocument;
+import com.citi.frontier.documents.ResendConfigDocument;
+import com.citi.frontier.documents.UserDocument;
+import com.citi.frontier.repository.ActiveHostRepository;
+import com.citi.frontier.repository.ClientConfigRepository;
+//import com.citi.frontier.repository.ClientEmailProcessRepository;
+import com.citi.frontier.repository.FileProcessLogRepository;
+import com.citi.frontier.repository.ReportFieldsRepository;
+import com.citi.frontier.repository.ReportScheduleRepository;
+import com.citi.frontier.repository.ReportSentLogRepository;
+//import com.citi.frontier.repository.ReportingFieldsRepository;
+import com.citi.frontier.repository.ReportingTransRepository;
+import com.citi.frontier.repository.ResendConfigRepository;
+import com.citi.frontier.repository.UserRepository;
+//import com.citi.reghub.core.cache.client.CacheClient;
+
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+@Service
+public class DBFacadeService {
+
+	@Autowired
+    MongoTemplate mongoTemplate;
+	
+	@Autowired
+	ClientConfigRepository clientConfigRepository;
+	
+	@Autowired
+	ReportScheduleRepository reportConfigRepository;
+	
+	@Autowired
+	ReportingTransRepository reportingTransRepository;
+	
+//	@Autowired
+//	ReportingFieldsRepository reportingFieldsRepository;
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	ReportSentLogRepository reportSentLogRepository;
+	
+//	@Autowired
+//	ClientEmailProcessRepository emailProcessRepository;
+	
+	@Autowired
+	ActiveHostRepository activeHostRepository;
+	
+	@Autowired
+	FileProcessLogRepository fileProcessLogRepository;
+	
+	@Autowired
+	ResendConfigRepository resendConfigRepository;
+	
+	@Autowired
+	ReportFieldsRepository reportFieldsRepository;
+	
+	//@Autowired
+    //private CacheClient cacheClient;
+	
+<<<<<<< HEAD
+	/*-----------------ActiveHostRepository-------------*/
+	public List<ActiveHostDocument> findAllActiveHost(){
+=======
+	/*------------ reportSentLogRepository --------------------*/
+	public List<ReportSentLogDocument> getLastOneDayLogs(long fromDate,long toDate){
+		return reportSentLogRepository.getLastOneDayLogs(fromDate, toDate);
+	}
+	public List<ReportSentLogDocument> rsLogFindAllLimitById(String id, int limit){
+		Query query = new Query();
+		if(StringUtils.isNotBlank(id)) {
+			query.addCriteria(Criteria.where("id").gt(id));
+		}
+		query.with(new Sort(Sort.Direction.ASC, "id"));
+		query.limit(limit);
+		return mongoTemplate.find(query,ReportSentLogDocument.class);
+	}
+	
+	public List<ReportSentLogDocument> rsLogfindByCrit(String critKey, String critVal, String lastId, int limit){
+		Query query = new Query();
+		
+		if(StringUtils.isNotBlank(lastId) && !"id".equalsIgnoreCase(critKey)) {
+			query.addCriteria(Criteria.where("id").gt(lastId));
+		}
+		if(StringUtils.isNotBlank(critKey) && StringUtils.isNotBlank(critVal)) {
+			query.addCriteria(Criteria.where(critKey).is(critVal));
+		}
+		query.with(new Sort(Sort.Direction.ASC, "id"));
+		query.limit(limit);
+		return mongoTemplate.find(query,ReportSentLogDocument.class);
+	}
+	/*------------ reportSentLogRepository --------------------*/
+	
+	public List<ActiveHostDocument> getActiveHost(){
+>>>>>>> e3556e70d5a0e84e6248c2d6f30aa196c21d6b07
+		return activeHostRepository.findAll();
+	}
+	public List<ActiveHostDocument> saveActiveHost(List<ActiveHostDocument> entities){
+		return activeHostRepository.save(entities);
+	}
+//	public List<ActiveHostDocument> getActiveHost(){
+//		return activeHostRepository.findAll();
+//	}
+	/*-----------------ActiveHostRepository-------------*/
+	
+	/*-----------------UserRepository-------------*/
+	public List<UserDocument> findAllUsers(){
+		return userRepository.findAll();
+	}
+	public List<UserDocument> findAllUsersByUserId(String userId){
+		return userRepository.findAllByUserId(userId);
+	}
+	public UserDocument saveUser(UserDocument entity){
+		return userRepository.save(entity);
+	}
+	public List<UserDocument> saveUsers(List<UserDocument> entites){
+		return userRepository.save(entites);
+	}
+	/*-----------------UserRepository-------------*/
+	
+	/*-----------------ClientConfigRepository-------------*/
+	public List<ClientConfigDocument> getClientConfigDocumentList(){
+		return clientConfigRepository.findAll();	
+	}
+	public List<ClientConfigDocument> getClientConfigDocumentActiveList(){
+		return clientConfigRepository.findAllActive();	
+	}
+	public List<ClientConfigDocument> getClientConfigbyClientId(String clientId){
+		return clientConfigRepository.getClientConfigbyClientId(clientId);
+	}
+	public List<ClientConfigDocument> getActiveClientsGFCID(String clientId){
+		return clientConfigRepository.getActiveClientsGFCID(clientId);
+	}
+	public List<ClientConfigDocument> addUpdateClientConfigDocument(List<ClientConfigDocument> clientConfigDocumentList){
+		return clientConfigRepository.save(clientConfigDocumentList);		
+	}
+	public List<ClientConfigDocument> findClientConfigByStatus(String active){
+		return clientConfigRepository.findAllbyStatus(active);
+	}
+	public Long deleteClientConfigbyStatus(String active){
+		return clientConfigRepository.deleteAllByStatus(active);
+	}
+	/*-----------------ClientConfigRepository-------------*/
+	
+	/*-----------------ReportConfigRepository-------------*/
+	public List<ReportScheduleDocument> getReportScheduleDocumentList(){
+		 return reportConfigRepository.findAll();
+	}
+	public List<ReportScheduleDocument> getReportConfigByClientId(String clientId){
+		 return reportConfigRepository.findAllByClientId(clientId);
+	}
+	public List<ReportScheduleDocument> getIntervalRptCfgList(){
+		return  reportConfigRepository.findIntervalRptCfgList();				
+	}
+	public List<ReportScheduleDocument> getDailyRptCfgList(){
+		return  reportConfigRepository.findDailyRptCfgList();				
+	}
+	public List<ReportScheduleDocument> addUpdateReportScheduleDocumentList(List<ReportScheduleDocument> reportScheduleDocumentList){
+		return reportConfigRepository.save(reportScheduleDocumentList);
+	}   
+	public ReportScheduleDocument addUpdateReportConfigDocument(ReportScheduleDocument reportScheduleDocument){
+		return reportConfigRepository.save(reportScheduleDocument);
+	}
+	/*-----------------ReportConfigRepository-------------*/
+	
+//	public List<ReportingFieldsDocument> getReportingFieldsList(){
+		//cacheClient.put(FrontierConstants.REPORTINT_FIELD_CACHE, value, frontierClient.getProperties()); // push
+        //cacheClient.get(fieldDocKey, frontierClient.getProperties()); // pull
+//		return reportingFieldsRepository.findAll();	
+//	}
+	
+	/*-----------------ReportingTransRepository-------------*/
+	public List<ReportingTransDocument> getReportingTransDocumentList(){
+		return reportingTransRepository.findAll();		 		
+	}
+	public List<ReportingTransDocument> getReportingTransactionByClientId(String clientId){
+		return reportingTransRepository.findAllByClientId(clientId);		 		
+	}
+	public List<ReportingTransDocument> getReportingTransactionByClientIdnLastUpdatedTs(String clientId, long fromDate, long toDate){
+		return reportingTransRepository.findAllByClientIdnLastUpdatedTs(clientId,fromDate,toDate);		 		
+	}
+	public List<ReportingTransDocument> saveReportingTransDocumentList(List<ReportingTransDocument> lst){
+		return reportingTransRepository.save(lst);		 		
+	}
+	public List<ReportingTransDocument> getIntervalTransactions(String status, String clientId){
+		return reportingTransRepository.getIntervalTransactions(status, clientId);			
+	}
+	
+	public List<ReportingTransDocument> getIntervalTransactionsAll( String clientId){
+		return reportingTransRepository.getIntervalTransactionsAll(clientId);
+	}
+	
+	public List<ReportingTransDocument> getDailyTransactions(String clientId, long currTime, long ystrDayTime){
+		return reportingTransRepository.getDailyTransactions(clientId,currTime,ystrDayTime);
+	  }
+	
+	public List<ReportingTransDocument> addUpdateReportingTransDocumentList(List<ReportingTransDocument> reportingTransDocumentList){
+		return reportingTransRepository.save(reportingTransDocumentList);
+	}
+	public List<ReportingTransDocument> getDeletableTransactions(long beyondDT){
+		return reportingTransRepository.getDeletableTransactions(beyondDT);
+	}
+	public void deleteTransactions(List<ReportingTransDocument> deletableTrns){
+		reportingTransRepository.delete(deletableTrns);
+	}
+	
+	public List<ReportingTransDocument> findAllLimitById(String id, int limit){
+		Query query = new Query();
+		if(StringUtils.isNotBlank(id)) {
+			query.addCriteria(Criteria.where("id").gt(id));
+		}
+		query.with(new Sort(Sort.Direction.ASC, "id"));
+		query.limit(limit);
+		return mongoTemplate.find(query,ReportingTransDocument.class);
+	}
+	
+	public List<ReportingTransDocument> findByCrit(String critKey, String critVal, String lastId, int limit){
+		Query query = new Query();
+		
+		if(StringUtils.isNotBlank(lastId) && !"id".equalsIgnoreCase(critKey)) {
+			query.addCriteria(Criteria.where("id").gt(lastId));
+		}
+		if(StringUtils.isNotBlank(critKey) && StringUtils.isNotBlank(critVal)) {
+			query.addCriteria(Criteria.where(critKey).is(critVal));
+		}
+		query.with(new Sort(Sort.Direction.ASC, "id"));
+		query.limit(limit);
+		return mongoTemplate.find(query,ReportingTransDocument.class);
+	}
+		
+	/*-----------------ReportingTransRepository-------------*/
+	
+	/*-----------------ReportSentLogDocument-------------*/
+	public List<ReportSentLogDocument> findAllReportSentLog(){
+		return reportSentLogRepository.findAll();
+	}
+	public List<ReportSentLogDocument> findAllReportSentLogByEmailSentTs(long fromDate,long toDate){
+		return reportSentLogRepository.getLastOneDayLogs(fromDate, toDate);
+	}
+	public ReportSentLogDocument saveReportSentLog(ReportSentLogDocument entity){
+		return reportSentLogRepository.save(entity);
+	}
+//	public List<ReportSentLogDocument> saveReportSentLog(List<ReportSentLogDocument> list){
+//		return reportSentLogRepository.save(list);
+//	}
+//	public List<ReportSentLogDocument> findAllActiveHostByEmailSentTS(long fromDate,long toDate){
+//		return reportSentLogRepository.getLastOneDayLogs(fromDate, toDate);
+//	}
+	/*-----------------ReportSentLogDocument-------------*/
+	
+	/*-----------------ClientEmailProcessRepository-------------*/
+//	public List<ClientEmailProcessDocument> getClientEmailProcessList(){
+//		return emailProcessRepository.findAll();
+//	}
+//	public List<ClientEmailProcessDocument> findIntervalRptProcessList(){
+//		return emailProcessRepository.findIntervalRptProcessList();
+//	}
+//	public List<ClientEmailProcessDocument> findDailyRptProcessList(){
+//		return emailProcessRepository.findDailyRptProcessList();
+//	}
+//	public ClientEmailProcessDocument saveClientEmailProcessDocumentt(ClientEmailProcessDocument document){
+//		return emailProcessRepository.save(document);
+//	}
+	/*-----------------ClientEmailProcessRepository-------------*/
+	
+	/*-----------------FileProcessLogRepository-------------*/
+	public List<FileProcessLogDocument> findAllFileProcessLog(){
+		return fileProcessLogRepository.findAll();
+	}
+	public List<FileProcessLogDocument> findAllFileProcessLogByFileName(String fileName){
+		return fileProcessLogRepository.findAllByFileName(fileName);
+	}
+	public FileProcessLogDocument saveFileProcessLog(FileProcessLogDocument entity){
+		return fileProcessLogRepository.save(entity);
+	}
+	/*-----------------FileProcessLogRepository-------------*/
+	
+	/*-----------------ResendConfigRepository-------------*/
+	public List<ResendConfigDocument> findAllResendConfig(){
+		return resendConfigRepository.findAll();
+	}
+	public List<ResendConfigDocument> findAllResendConfigByStatus(String status){
+		return resendConfigRepository.findAllByStatus(status);
+	}
+	public ResendConfigDocument saveResendConfig(ResendConfigDocument entity){
+		return resendConfigRepository.save(entity);
+	}
+	public List<ResendConfigDocument> saveResendConfig(List<ResendConfigDocument> entities){
+		return resendConfigRepository.save(entities);
+	}
+	/*-----------------ResendConfigRepository-------------*/
+	
+	/*-----------------ReportFieldsRepository-------------*/
+	public List<ReportFieldsDocument> findAllReportFields(){
+		return reportFieldsRepository.findAll();
+	}
+	public ReportFieldsDocument saveReportFields(ReportFieldsDocument entity){
+		return reportFieldsRepository.save(entity);
+	}
+	public void deleteReportFields(List<ReportFieldsDocument> entities){
+		reportFieldsRepository.delete(entities);
+	}
+	/*-----------------ReportFieldsRepository-------------*/
+}

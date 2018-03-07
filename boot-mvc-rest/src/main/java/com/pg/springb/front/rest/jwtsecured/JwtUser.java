@@ -1,4 +1,4 @@
-package com.citi.frontier.rest.jwtsecured;
+package com.pg.springb.front.rest.jwtsecured;
 
 import java.util.List;
 
